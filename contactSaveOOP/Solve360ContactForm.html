@@ -1,0 +1,23 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type="text/css">
+      label, input, textarea { display: block; float: left; width: 150px; margin: 5px; }
+      label { clear: left; text-align: right; }
+      input[type="submit"] { width: 60px; margin: 10px 0 0 165px; clear: left; }
+    </style>
+  </head>
+  <body>
+    <h2>Contact Us</h2>
+    <form action="Solve360ContactSave.php" method="GET">
+      <label>First name (required)</label> <input type="text" name="firstname" value="" />
+      <label>Last Name</label> <input type="text" name="lastname" value="" />
+      <label>Job title</label> <input type="text" name="jobtitle" value="" />
+      <label>Business email</label> <input type="text" name="businessemail" value="" />
+      <!-- OPTIONAL Remove the following commented line to save a note too -->
+      <!-- <label>Note</label> <textarea name="note" cols="4" rows="4"></textarea> -->
+      <input type="submit" value="Save" />
+    </form>
+  </body>
+</html> 
