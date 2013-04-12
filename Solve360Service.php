@@ -17,7 +17,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * @copyright  Copyright (c) Norada Corporation (http://www.norada.com)
- * @version    0.8
+ * @version    0.8.1
  */
 class Solve360Service
 {
@@ -46,6 +46,10 @@ class Solve360Service
      * @var string
      */
     const ACTIVITY_FILE            = 'file';
+    /**
+     * @var string
+     */
+    const ATTACHMENT_FILE          = 'attachmentfile';
     /**
      * @var string
      */
@@ -892,6 +896,56 @@ class Solve360Service
         }
 
         return $this->request($uri, self::RESTVERB_POST, $data);
+    }
+
+    /**
+     * Uploads a file, a photo or an attachment file
+     *
+     * @param $parentId
+     * @param $activityType
+     * @param $filePath
+     * @param null $fileName
+     * @param string $itemsType
+     * @return integer|SimpleXMLElement
+     */
+    function upload($parentId, $activityType, $filePath, $fileName = null, $itemsType = self::ITEM_CONTACTS)
+    {
+        if (!$fileName) {
+            $fileName = basename($filePath);
+        }
+
+        $restVerb = self::RESTVERB_POST;
+        $uri = '/' . $itemsType . '/' . $activityType . '/';
+
+        $boundary = "---------------------".substr(md5(rand(0,32000)), 0, 10);
+        $data = "--$boundary\n";
+        $data .= "Content-Disposition: form-data; name=\"parent\"\n\n" . $parentId . "\n";
+        $data .= "--$boundary\n";
+        $data .= "Content-Disposition: form-data; name=\"file\"; filename=\"$fileName\"\n";
+        $data .= "Content-Type: application/octet-stream\n";
+        $data .= "Content-Transfer-Encoding: binary\n\n";
+        $data .= file_get_contents($filePath)."\n";
+        $data .= "--$boundary--\n";
+
+        // Prepare request body
+        $request = "$restVerb $uri HTTP/1.1\r\n"
+            . "Host: " . $this->getHost() . "\r\n"
+            . "Authorization: Basic " . $this->getCredentials() . "\r\n"
+            . "Content-Type: multipart/form-data; boundary=$boundary\r\n"
+            . "Accept: application/xml\r\n"
+            . "Content-Length: " . strlen($data) . "\r\n"
+            . "Connection: close\r\n\r\n"
+            . $data;
+
+        if ($this->_batchMode) {
+            // when in batch mode we schedule the requests and return
+            // a key (integer) by which the appropriate response may be retrieved later
+            $this->_batchRequests[] = $request;
+            return key($this->_batchRequests);
+        } else {
+            // otherwise, we perform request immediately, parse and return it as xml
+            return $this->_responseToXml($this->_request($request));
+        }
     }
 
     /**
