@@ -13,14 +13,11 @@ Contents
 Solve360Service usage examples
 ==============================
 Generally, feel free to dig into the public API of the class to see what's available, all the methods and their arguments are self-explanatory. To create an instance use:
-
 ```php
 require 'Solve360Service.php';
 $solve360Service = new Solve360Service('yourEmail', 'yourApiToken');
 ```
-
 from then you can create contacts, companies, blogs, different activities, set relation between items, tag them etc:
-
 ```php
 $contact = $solve360Service->getContact(479038);
 $newContact = $solve360Service->addContact(array(
@@ -30,7 +27,6 @@ $solve360Service->addContactRelation($contact->item->id, $newContact->item->id);
 ```
 
 To use the new [batch api](http://norada.com/answers/api/external_api_reference_batch), you can turn it on and off with the methods available:
-
 ```php
 $solve360Service->enableBatchMode(); // enables batch mode
 $key1 = $solve360Service->getContact(479038); // schedules a GET contact request
@@ -49,7 +45,6 @@ $solve360Service->disableBatchMode(); // proceed in the normal regime from now
 ```
 
 You can also use the utility class to upload a file to an item, a photo to a photo container or an attachment file to a scheduled email:
-
 ```php
 // 77721604 is the id of a photo container
 $solve360Service->upload(77721604, 'photo', 'C:\Users\Alex\Photos\0612.jpg', 'My File.jpg'); // overwrites the file name to My File.jpg
