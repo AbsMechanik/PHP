@@ -19,7 +19,7 @@ require 'Solve360Service.php';
 $solve360Service = new Solve360Service('yourEmail', 'yourApiToken');
 ```
 
-from then use can create contacts, companies, blogs, different activities, set relation between items, tag them etc:
+from then you can create contacts, companies, blogs, different activities, set relation between items, tag them etc:
 
 ```php
 $contact = $solve360Service->getContact(479038);
