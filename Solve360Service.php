@@ -17,7 +17,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * @copyright  Copyright (c) Norada Corporation (http://www.norada.com)
- * @version    0.8.1
+ * @version    0.8.2
  */
 class Solve360Service
 {
@@ -941,7 +941,7 @@ class Solve360Service
             // when in batch mode we schedule the requests and return
             // a key (integer) by which the appropriate response may be retrieved later
             $this->_batchRequests[] = $request;
-            return key($this->_batchRequests);
+            return count($this->_batchRequests) - 1;
         } else {
             // otherwise, we perform request immediately, parse and return it as xml
             return $this->_responseToXml($this->_request($request));
